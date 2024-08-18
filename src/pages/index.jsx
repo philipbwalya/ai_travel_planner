@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 // import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import { Input } from "@/components/ui/input";
-import { SelectBudgetOptions, SelectTravelsList } from "@/constants/options";
+import {
+  AI_PROMPT,
+  SelectBudgetOptions,
+  SelectTravelsList,
+} from "@/constants/options";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
@@ -30,9 +34,13 @@ const CreateTrip = () => {
       toast("Please fill in all the fields.", {
         type: "error",
       });
-
       return;
     }
+    const FINAL_PROMPT = AI_PROMPT.replace("{location}", formData.location)
+      .replace("{noOfDays}", formData.noOfDays)
+      .replace("{traveler}", formData.traveler)
+      .replace("{budget}", formData.budget);
+    console.log(FINAL_PROMPT);
   };
 
   return (
