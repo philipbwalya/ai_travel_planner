@@ -1,3 +1,12 @@
+/*
+ * Install the Generative AI SDK
+ *
+ * $ npm install @google/generative-ai
+ */
+
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+// hghghg
 import React, { useEffect, useState } from "react";
 // import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import { Input } from "@/components/ui/input";
@@ -10,7 +19,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { chatSession } from "@/services/AIModal";
 
-const CreateTrip = () => {
+const Gen = () => {
   const [destination, setDestination] = useState("");
   const [formData, setFormData] = useState([]);
 
@@ -25,32 +34,64 @@ const CreateTrip = () => {
     console.log(formData);
   }, [formData]);
 
-  const generateTrip = async () => {
-    if (
-      !formData.budget ||
-      !formData.traveler ||
-      !formData.location ||
-      !formData.noOfDays
-    ) {
-      toast("Please fill in all the fields.", {
-        type: "error",
-      });
-      return;
-    }
-    const FINAL_PROMPT = AI_PROMPT.replace("{location}", formData.location)
-      .replace("{noOfDays}", formData.noOfDays)
-      .replace("{traveler}", formData.traveler)
-      .replace("{budget}", formData.budget)
-      .replace("{noOfDays}", formData.noOfDays);
-    console.log(FINAL_PROMPT);
+  const gen = async () => {
+    // const apiKey = import.meta.env.GEMINI_API_KEY;
+    const apiKey = "AIzaSyA7N4wQQidbaNd-5shArNCAjxoEoFCXymA";
+    const genAI = new GoogleGenerativeAI(apiKey);
 
-    try {
-      const result = await chatSession.sendMessage(FINAL_PROMPT);
-      console.log(result?.response?.text());
-    } catch (error) {
-      console.error("An error occurred while sending the message:", error);
+    const model = genAI.getGenerativeModel({
+      model: "gemini-1.5-flash",
+    });
+
+    const generationConfig = {
+      temperature: 1,
+      topP: 0.95,
+      topK: 64,
+      maxOutputTokens: 8192,
+      responseMimeType: "text/plain",
+    };
+
+    async function run() {
+      const chatSession = model.startChat({
+        generationConfig,
+        // safetySettings: Adjust safety settings
+        // See https://ai.google.dev/gemini-api/docs/safety-settings
+        history: [],
+      });
+
+      const result = await chatSession.sendMessage("what is a computer");
+      console.log(result.response.text());
     }
+
+    run();
   };
+
+  // const generateTrip = async () => {
+  //   if (
+  //     !formData.budget ||
+  //     !formData.traveler ||
+  //     !formData.location ||
+  //     !formData.noOfDays
+  //   ) {
+  //     toast("Please fill in all the fields.", {
+  //       type: "error",
+  //     });
+  //     return;
+  //   }
+  //   const FINAL_PROMPT = AI_PROMPT.replace("{location}", formData.location)
+  //     .replace("{noOfDays}", formData.noOfDays)
+  //     .replace("{traveler}", formData.traveler)
+  //     .replace("{budget}", formData.budget)
+  //     .replace("{noOfDays}", formData.noOfDays);
+  //   console.log(FINAL_PROMPT);
+
+  //   try {
+  //     const result = await chatSession.sendMessage(FINAL_PROMPT);
+  //     console.log(result?.response?.text());
+  //   } catch (error) {
+  //     console.error("An error occurred while sending the message:", error);
+  //   }
+  // };
 
   return (
     <div className="px-5 mt-10 flex flex-col items-cente justify-center max-w-7xl mx-auto mb-10">
@@ -142,10 +183,10 @@ const CreateTrip = () => {
         </div>
       </div>
       <div className="flex justify-end my-5 mx-5">
-        <Button onClick={generateTrip}>Generate Trip</Button>
+        <Button onClick={gen}>Generate Trip</Button>
       </div>
     </div>
   );
 };
 
-export default CreateTrip;
+export default Gen;
