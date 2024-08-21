@@ -13,7 +13,7 @@ const Hero = () => {
       </h1>
       <p className="text-xl text-gray-500 text-center">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus
-        voluptates ipsum totam. Ipsa blanditiis
+        voluptates ipsum totam. Ipsa blanditiis..
       </p>
       <Link to={"/create-trip"} className="flex items-center justify-center">
         {" "}
