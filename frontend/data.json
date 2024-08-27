@@ -1,0 +1,130 @@
+
+{
+  "hotels": [
+    {
+      "hotelName": "The Backpackers",
+      "hotelAddress": "121 Long Street, Cape Town, 8001",
+      "price": "$20-$30 per night",
+      "hotelImageUrl": "https://www.thebackpackers.co.za/images/gallery/exterior.jpg",
+      "geoCoordinates": "-33.9255, 18.4241",
+      "rating": "3.5 stars",
+      "description": "A centrally located hostel with private rooms and dorms, offering a communal kitchen and lounge area."
+    },
+    {
+      "hotelName": "Cape Town Backpackers",
+      "hotelAddress": "34 Wale Street, Cape Town, 8001",
+      "price": "$15-$25 per night",
+      "hotelImageUrl": "https://www.capetownbackpackers.com/images/gallery/exterior.jpg",
+      "geoCoordinates": "-33.9262, 18.4234",
+      "rating": "3 stars",
+      "description": "A budget-friendly hostel with a rooftop terrace and a bar, offering a social atmosphere."
+    },
+    {
+      "hotelName": "The Cape Grace",
+      "hotelAddress": "111 Main Road, V&A Waterfront, Cape Town, 8001",
+      "price": "$100-$150 per night",
+      "hotelImageUrl": "https://www.capegrace.com/images/gallery/exterior.jpg",
+      "geoCoordinates": "-33.9148, 18.4193",
+      "rating": "5 stars",
+      "description": "A luxurious hotel located in the V&A Waterfront, offering stunning views of Table Mountain and the harbor."
+    },
+    {
+      "hotelName": "The President Hotel",
+      "hotelAddress": "11 President Avenue, Bantry Bay, Cape Town, 8005",
+      "price": "$80-$120 per night",
+      "hotelImageUrl": "https://www.presidenthotel.co.za/images/gallery/exterior.jpg",
+      "geoCoordinates": "-33.9939, 18.4085",
+      "rating": "4 stars",
+      "description": "A stylish hotel with a rooftop pool and bar, offering panoramic city views and close proximity to the beach."
+    }
+  ],
+  "itinerary": {
+    "day1": [
+      {
+        "time": "Morning (9:00 AM - 12:00 PM)",
+        "placeName": "Table Mountain",
+        "placeDetails": "A iconic flat-topped mountain offering breathtaking views of Cape Town. You can hike to the top or take the cable car.",
+        "placeImageUrl": "https://www.tablemountain.net/images/gallery/table-mountain.jpg",
+        "geoCoordinates": "-33.9616, 18.4241",
+        "ticketPricing": "Cable car: R280 per person",
+        "timeToTravel": "3-4 hours"
+      },
+      {
+        "time": "Afternoon (1:00 PM - 4:00 PM)",
+        "placeName": "Robben Island",
+        "placeDetails": "A former prison island where Nelson Mandela was incarcerated. Take a ferry tour and learn about South Africa's history of apartheid.",
+        "placeImageUrl": "https://www.robbenislandmuseum.org.za/images/gallery/robben-island.jpg",
+        "geoCoordinates": "-33.7981, 18.4204",
+        "ticketPricing": "Ferry: R350 per person",
+        "timeToTravel": "4-5 hours (including travel time)"
+      },
+      {
+        "time": "Evening (6:00 PM - 9:00 PM)",
+        "placeName": "Long Street",
+        "placeDetails": "A vibrant street with shops, restaurants, bars, and street performers. Enjoy a casual dinner and drinks.",
+        "placeImageUrl": "https://www.longstreet.co.za/images/gallery/long-street.jpg",
+        "geoCoordinates": "-33.9265, 18.4243",
+        "ticketPricing": "Free",
+        "timeToTravel": "2-3 hours"
+      }
+    ],
+    "day2": [
+      {
+        "time": "Morning (9:00 AM - 12:00 PM)",
+        "placeName": "Kirstenbosch National Botanical Garden",
+        "placeDetails": "A beautiful botanical garden situated on the slopes of Table Mountain, showcasing native South African plants.",
+        "placeImageUrl": "https://www.sanbi.org/gardens/kirstenbosch/images/gallery/kirstenbosch.jpg",
+        "geoCoordinates": "-33.9840, 18.4558",
+        "ticketPricing": "R80 per person",
+        "timeToTravel": "2-3 hours"
+      },
+      {
+        "time": "Afternoon (1:00 PM - 4:00 PM)",
+        "placeName": "Bo-Kaap",
+        "placeDetails": "A colorful historic neighborhood with cobbled streets, brightly painted houses, and mosques. Explore the area and enjoy the delicious Malay cuisine.",
+        "placeImageUrl": "https://www.bo-kaap.co.za/images/gallery/bo-kaap.jpg",
+        "geoCoordinates": "-33.9278, 18.4259",
+        "ticketPricing": "Free",
+        "timeToTravel": "2-3 hours"
+      },
+      {
+        "time": "Evening (6:00 PM - 9:00 PM)",
+        "placeName": "V&A Waterfront",
+        "placeDetails": "A bustling waterfront area with shops, restaurants, bars, and the Two Oceans Aquarium. Enjoy dinner at one of the many restaurants.",
+        "placeImageUrl": "https://www.waterfront.co.za/images/gallery/v-a-waterfront.jpg",
+        "geoCoordinates": "-33.9156, 18.4196",
+        "ticketPricing": "Free",
+        "timeToTravel": "2-3 hours"
+      }
+    ],
+    "day3": [
+      {
+        "time": "Morning (9:00 AM - 12:00 PM)",
+        "placeName": "Cape Point",
+        "placeDetails": "A dramatic headland at the southwestern tip of the Cape Peninsula, offering stunning views of the Atlantic and Indian Oceans.",
+        "placeImageUrl": "https://www.capepoint.co.za/images/gallery/cape-point.jpg",
+        "geoCoordinates": "-34.3429, 18.4881",
+        "ticketPricing": "R200 per person",
+        "timeToTravel": "4-5 hours (including travel time)"
+      },
+      {
+        "time": "Afternoon (1:00 PM - 4:00 PM)",
+        "placeName": "Boulders Beach",
+        "placeDetails": "A beach home to a colony of African penguins. See these adorable creatures up close and enjoy the beautiful coastline.",
+        "placeImageUrl": "https://www.sanparks.org/images/gallery/boulders-beach.jpg",
+        "geoCoordinates": "-34.1142, 18.4386",
+        "ticketPricing": "R100 per person",
+        "timeToTravel": "2-3 hours"
+      },
+      {
+        "time": "Evening (6:00 PM - 9:00 PM)",
+        "placeName": "Dinner at a local restaurant in Camps Bay",
+        "placeDetails": "Enjoy a delicious meal at one of the many restaurants in Camps Bay, overlooking the ocean.",
+        "placeImageUrl": "https://www.campsbay.co.za/images/gallery/camps-bay.jpg",
+        "geoCoordinates": "-33.9878, 18.4334",
+        "ticketPricing": "Varies",
+        "timeToTravel": "2-3 hours"
+      }
+    ]
+  }
+}

@@ -11,7 +11,6 @@ import { toast } from "sonner";
 import { chatSession } from "@/services/AIModal";
 
 const CreateTrip = () => {
-  const [destination, setDestination] = useState("");
   const [formData, setFormData] = useState([]);
 
   const handlechange = (name, value) => {
@@ -22,7 +21,7 @@ const CreateTrip = () => {
   };
 
   useEffect(() => {
-    console.log(formData);
+    // console.log(formData);
   }, [formData]);
 
   const generateTrip = async () => {
@@ -37,18 +36,39 @@ const CreateTrip = () => {
       });
       return;
     }
+    toast("Please wait while we generate your trip!", {
+      type: "success",
+    });
     const FINAL_PROMPT = AI_PROMPT.replace("{location}", formData.location)
       .replace("{noOfDays}", formData.noOfDays)
       .replace("{traveler}", formData.traveler)
       .replace("{budget}", formData.budget)
       .replace("{noOfDays}", formData.noOfDays);
-    console.log(FINAL_PROMPT);
+    // console.log(FINAL_PROMPT);
 
     try {
       const result = await chatSession.sendMessage(FINAL_PROMPT);
-      console.log(result?.response?.text());
+      const tripData = result?.response?.text();
+      const parsedTripData = JSON.parse(tripData);
+
+      // Send the trip data to Node.js backend
+      await axios.post("/api/trips", {
+        trip_name: `Trip to ${formData.location}`,
+        hotel_options: parsedTripData.hotels,
+        itinerary: parsedTripData.itinerary,
+      });
+
+      // console.log("hotels:", parsedTripData.hotels);
+      // console.log("itinerary:", parsedTripData.itinerary);
+
+      // toast("Trip generated and saved successfully!", {
+      //   type: "success",
+      // });
     } catch (error) {
-      console.error("An error occurred while sending the message:", error);
+      console.error("An error occurred while generating the trip:", error);
+      toast("Failed to generate and save the trip.", {
+        type: "error",
+      });
     }
   };
 

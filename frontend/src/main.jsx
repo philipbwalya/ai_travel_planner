@@ -6,7 +6,6 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import CreateTrip from "./pages/index.jsx";
 import Header from "./components/customs/Header.jsx";
 import { Toaster } from "./components/ui/sonner.jsx";
-import Gen from "./pages/Gen.jsx";
 
 const router = createBrowserRouter([
   {
@@ -16,10 +15,6 @@ const router = createBrowserRouter([
   {
     path: "/create-trip",
     element: <CreateTrip />,
-  },
-  {
-    path: "/gen",
-    element: <Gen />,
   },
 ]);
 
