@@ -9,6 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { chatSession } from "@/services/AIModal";
+import axios from "axios";
 
 const CreateTrip = () => {
   const [formData, setFormData] = useState([]);
@@ -36,7 +37,7 @@ const CreateTrip = () => {
       });
       return;
     }
-    toast("Please wait while we generate your trip!", {
+    toast("Please wait while AI generates your trip!", {
       type: "success",
     });
     const FINAL_PROMPT = AI_PROMPT.replace("{location}", formData.location)
@@ -52,18 +53,20 @@ const CreateTrip = () => {
       const parsedTripData = JSON.parse(tripData);
 
       // Send the trip data to Node.js backend
-      await axios.post("/api/trips", {
-        trip_name: `Trip to ${formData.location}`,
-        hotel_options: parsedTripData.hotels,
-        itinerary: parsedTripData.itinerary,
+      await axios.post("http://localhost:3000/api/trips/", {
+        trip_name: `Trip to ${formData?.location}`,
+        location: formData?.location,
+        no_of_days: formData?.noOfDays,
+        hotels: parsedTripData?.hotels,
+        itinerary: parsedTripData?.itinerary,
       });
 
       // console.log("hotels:", parsedTripData.hotels);
       // console.log("itinerary:", parsedTripData.itinerary);
 
-      // toast("Trip generated and saved successfully!", {
-      //   type: "success",
-      // });
+      toast("Trip generated and saved successfully!", {
+        type: "success",
+      });
     } catch (error) {
       console.error("An error occurred while generating the trip:", error);
       toast("Failed to generate and save the trip.", {

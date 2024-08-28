@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 
 exports.signup = async (req, res) => {
   try {
-    const { firstname, lastname, email, password, role } = req.body;
+    const { firstname, lastname, email, password } = req.body;
 
     const checkq = "SELECT * FROM users WHERE email = ?";
     db.query(checkq, [email], async (err, result) => {
@@ -23,7 +23,6 @@ exports.signup = async (req, res) => {
         lastname,
         email,
         hashedPassword,
-        role,
         new Date(), // Insert current date and time
       ];
 
