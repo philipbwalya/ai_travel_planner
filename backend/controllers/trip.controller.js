@@ -99,6 +99,7 @@ exports.createTrip = (req, res) => {
                     res.status(201).json({
                       status: "success",
                       message: "Trip created successfully",
+                      trip_id,
                     });
                   })
                   .catch((err) => {
@@ -108,6 +109,7 @@ exports.createTrip = (req, res) => {
                 res.status(201).json({
                   status: "success",
                   message: "Trip created successfully, no itinerary provided",
+                  trip_id,
                 });
               }
             })
@@ -118,6 +120,7 @@ exports.createTrip = (req, res) => {
           res.status(201).json({
             status: "success",
             message: "Trip created successfully, no hotel options provided",
+            trip_id,
           });
         }
       }
@@ -125,5 +128,88 @@ exports.createTrip = (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
     console.error(error);
+  }
+};
+
+// controller to retrieve a requested trip
+
+exports.getTrip = (req, res) => {
+  const { trip_id } = req.params;
+
+  const tripQuery = `
+    SELECT * FROM trips WHERE id = ?
+  `;
+  const hotelOptionsQuery = `
+    SELECT * FROM hotels WHERE trip_id = ?
+  `;
+  const itineraryQuery = `
+    SELECT * FROM itinerary WHERE trip_id = ?
+  `;
+  try {
+    // Get the trip details
+    db.query(tripQuery, [trip_id], (err, tripResult) => {
+      if (err) {
+        return res
+          .status(500)
+          .json({ message: "Error retrieving trip", error: err.message });
+      }
+
+      if (tripResult.length === 0) {
+        return res.status(404).json({ message: "Trip not found" });
+      }
+
+      const trip = tripResult[0];
+
+      // Get the hotel options
+      db.query(hotelOptionsQuery, [trip_id], (err, hotelOptionsResult) => {
+        if (err) {
+          return res.status(500).json({
+            message: "Error retrieving hotel options",
+            error: err.message,
+          });
+        }
+
+        trip.hotels = hotelOptionsResult;
+
+        // Get the itinerary
+        db.query(itineraryQuery, [trip_id], (err, itineraryResult) => {
+          if (err) {
+            return res.status(500).json({
+              message: "Error retrieving itinerary",
+              error: err.message,
+            });
+          }
+
+          // structuring the itineraries in object form...something like
+          //  {
+          //   1: [
+          //     { day: 1, time: "08:00", place_name: "Breakfast at Hotel", ... },
+          //     { day: 1, time: "10:00", place_name: "Visit Museum", ... }
+          //   ],
+          //   2: [
+          //     { day: 2, time: "09:00", place_name: "City Tour", ... },
+          //     { day: 2, time: "14:00", place_name: "Lunch at Local Restaurant", ... }
+          //   ]
+          // }
+          const itinerary = {};
+          itineraryResult.forEach((item) => {
+            if (!itinerary[item.day]) {
+              itinerary[item.day] = [];
+            }
+            itinerary[item.day].push(item);
+          });
+
+          trip.itinerary = itinerary;
+
+          // Send the final trip data with hotel options and itinerary
+          res.status(200).json({
+            status: "success",
+            trip,
+          });
+        });
+      });
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
