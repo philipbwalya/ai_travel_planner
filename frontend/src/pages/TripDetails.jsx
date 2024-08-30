@@ -59,7 +59,7 @@ const TripDetails = () => {
         {tripData?.trip.itinerary &&
           Object.keys(tripData?.trip.itinerary).map((day, index) => (
             <div key={index} className="mt-5">
-              <h4 className="text-xl font-semibold">Day {day}</h4>
+              <h4 className="text-xl font-semibold">{day}</h4>
               <ul>
                 {tripData?.trip.itinerary[day].map((item, idx) => (
                   <li key={idx} className="mt-2">
