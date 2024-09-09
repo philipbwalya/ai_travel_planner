@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 // import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import { Input } from "@/components/ui/input";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import {
   AI_PROMPT,
   SelectBudgetOptions,
@@ -14,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 
 const CreateTrip = () => {
   const [formData, setFormData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const handlechange = (name, value) => {
     setFormData({
@@ -40,6 +42,7 @@ const CreateTrip = () => {
       });
       return;
     }
+    setLoading(true);
     toast("Please wait while AI generates your trip!", {
       type: "success",
     });
@@ -60,6 +63,8 @@ const CreateTrip = () => {
         "http://localhost:3000/api/trips/",
         {
           trip_name: `Trip to ${formData?.location}`,
+          traveler: formData?.traveler,
+          budget: formData?.budget,
           location: formData?.location,
           no_of_days: formData?.noOfDays,
           hotels: parsedTripData?.hotels,
@@ -74,6 +79,7 @@ const CreateTrip = () => {
           type: "success",
         });
         // Redirect to the trip details page
+        setLoading(false);
         navigate(`/trip-details/${trip_id}`);
       }
 
@@ -177,7 +183,13 @@ const CreateTrip = () => {
         </div>
       </div>
       <div className="flex justify-end my-5 mx-5">
-        <Button onClick={generateTrip}>Generate Trip</Button>
+        <Button onClick={generateTrip}>
+          {loading ? (
+            <AiOutlineLoading3Quarters className="w-7 h-7 animate-spin" />
+          ) : (
+            "Generate Trip"
+          )}
+        </Button>
       </div>
     </div>
   );
