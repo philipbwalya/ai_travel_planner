@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { toast } from "sonner";
+import TripHero from "@/components/customs/TripHero";
+import HotelList from "@/components/customs/HotelList";
 
 const TripDetails = () => {
   const { trip_id } = useParams(); // Retrieve trip_id from the URL
@@ -38,18 +40,12 @@ const TripDetails = () => {
 
   return (
     <div className="px-5 mt-10 max-w-7xl mx-auto mb-10">
-      <h2 className="text-3xl font-bold">{tripData?.trip.trip_name}</h2>
-      <p className="text-gray-500 text-xl">{tripData?.trip.location}</p>
-      <p className="text-lg">Number of Days: {tripData?.trip.no_of_days}</p>
-
+      <TripHero tripData={tripData} />
       <div className="mt-10">
         <h3 className="text-2xl font-semibold">Hotel Options</h3>
-        <ul>
+        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {tripData?.trip.hotels?.map((hotel, index) => (
-            <li key={index} className="mt-3">
-              <h4 className="text-xl font-semibold">{hotel?.hotel_name}</h4>
-              <p>{hotel?.rating}</p>
-            </li>
+            <HotelList key={index} hotel={hotel} />
           ))}
         </ul>
       </div>

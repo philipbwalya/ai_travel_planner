@@ -14,8 +14,8 @@ exports.createTrip = (req, res) => {
 
     // Insert trip data into the database
     const insertTripQuery = `
-      INSERT INTO trips (user_id, trip_name, location, no_of_days) 
-      VALUES (?, ?, ?, ?)
+      INSERT INTO trips (user_id, trip_name, location, no_of_days, traveler, budget) 
+      VALUES (?, ?, ?, ?, ?, ?)
     `;
 
     db.query(
