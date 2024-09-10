@@ -42,7 +42,7 @@ const TripDetails = () => {
     <div className="px-5 mt-10 max-w-7xl mx-auto mb-10">
       <TripHero tripData={tripData} />
       <div className="mt-10">
-        <h3 className="text-2xl font-semibold">Hotel Options</h3>
+        <h3 className="text-2xl font-semibold pb-5">Hotel Recomendations</h3>
         <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {tripData?.trip.hotels?.map((hotel, index) => (
             <HotelList key={index} hotel={hotel} />
