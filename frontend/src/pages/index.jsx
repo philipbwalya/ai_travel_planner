@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 // import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import { Input } from "@/components/ui/input";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
@@ -30,13 +30,14 @@ const CreateTrip = () => {
 
   const navigate = useNavigate();
 
+  var tester =
+    !formData.budget ||
+    !formData.traveler ||
+    !formData.location ||
+    !formData.noOfDays;
+
   const generateTrip = async () => {
-    if (
-      !formData.budget ||
-      !formData.traveler ||
-      !formData.location ||
-      !formData.noOfDays
-    ) {
+    if (tester) {
       toast("Please fill in all the fields.", {
         type: "error",
       });
@@ -90,6 +91,7 @@ const CreateTrip = () => {
       toast("Failed to generate and save the trip.", {
         type: "error",
       });
+      setLoading(false);
     }
   };
 

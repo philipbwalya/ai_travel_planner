@@ -2,8 +2,16 @@ const db = require("../db");
 
 exports.createTrip = (req, res) => {
   try {
-    const { user_id, trip_name, location, no_of_days, hotels, itinerary } =
-      req.body;
+    const {
+      user_id,
+      trip_name,
+      location,
+      no_of_days,
+      hotels,
+      itinerary,
+      traveler,
+      budget,
+    } = req.body;
 
     if (/*!user_id ||*/ !trip_name || !location || !no_of_days) {
       return res.status(400).json({
@@ -17,10 +25,11 @@ exports.createTrip = (req, res) => {
       INSERT INTO trips (user_id, trip_name, location, no_of_days, traveler, budget) 
       VALUES (?, ?, ?, ?, ?, ?)
     `;
+    const values = [user_id, trip_name, location, no_of_days, traveler, budget];
 
     db.query(
       insertTripQuery,
-      [user_id, trip_name, location, no_of_days],
+      [user_id, trip_name, location, no_of_days, traveler, budget],
       (err, result) => {
         if (err) {
           return res.status(500).json({ message: err.message });
