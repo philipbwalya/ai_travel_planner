@@ -12,6 +12,8 @@ import { toast } from "sonner";
 import { chatSession } from "@/services/AIModal";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import BudgetCard from "@/components/customs/BudgetCard";
+import TravelerCard from "@/components/customs/TravelerCard";
 
 const CreateTrip = () => {
   const [formData, setFormData] = useState([]);
@@ -24,9 +26,7 @@ const CreateTrip = () => {
     });
   };
 
-  useEffect(() => {
-    // console.log(formData);
-  }, [formData]);
+  useEffect(() => {}, [formData]);
 
   const navigate = useNavigate();
 
@@ -52,7 +52,6 @@ const CreateTrip = () => {
       .replace("{traveler}", formData.traveler)
       .replace("{budget}", formData.budget)
       .replace("{noOfDays}", formData.noOfDays);
-    // console.log(FINAL_PROMPT);
 
     try {
       const result = await chatSession.sendMessage(FINAL_PROMPT);
@@ -83,9 +82,6 @@ const CreateTrip = () => {
         setLoading(false);
         navigate(`/trip-details/${trip_id}`);
       }
-
-      // console.log("hotels:", parsedTripData.hotels);
-      // console.log("itinerary:", parsedTripData.itinerary);
     } catch (error) {
       console.error("An error occurred while generating the trip:", error);
       toast("Failed to generate and save the trip.", {
@@ -138,21 +134,12 @@ const CreateTrip = () => {
         </p>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-10 mt-10 justify-items-center items-center">
           {SelectBudgetOptions.map((item, index) => (
-            <div
-              className={`border border-gray-100 px-5 py-4 md:px-10 rounded-md shadow-md hover:shadow-2xl cursor-pointer w-[100%] ${
-                formData?.budget === item.title && "bg-gray-100"
-              }`}
+            <BudgetCard
+              formData={formData}
+              item={item}
+              handlechange={handlechange}
               key={index}
-              onClick={(e) => handlechange("budget", item.title)}
-            >
-              <h2 className="text-4xl flex justify-center pb-4">{item.icon}</h2>
-              <h2 className="font-bold text-lg flex justify-center">
-                {item.title}
-              </h2>
-              <h2 className="text-sm text-gray-500 flex justify-center">
-                {item.desc}
-              </h2>
-            </div>
+            />
           ))}
         </div>
       </div>
@@ -166,21 +153,12 @@ const CreateTrip = () => {
         </p>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-10 mt-10 justify-items-center items-center">
           {SelectTravelsList.map((item, index) => (
-            <div
-              className={`border border-gray-100 px-5 py-4 md:px-10 rounded-md shadow-md hover:shadow-2xl cursor-pointer w-[100%] ${
-                formData?.traveler === item.people && "bg-gray-100"
-              }`}
+            <TravelerCard
+              formData={formData}
+              item={item}
+              handlechange={handlechange}
               key={index}
-              onClick={(e) => handlechange("traveler", item.people)}
-            >
-              <h2 className="text-4xl flex justify-center pb-4">{item.icon}</h2>
-              <h2 className="font-bold text-lg flex justify-center">
-                {item.title}
-              </h2>
-              <h2 className="text-sm text-gray-500 flex justify-center">
-                {item.desc}
-              </h2>
-            </div>
+            />
           ))}
         </div>
       </div>

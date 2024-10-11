@@ -27,113 +27,109 @@ exports.createTrip = (req, res) => {
     `;
     const values = [user_id, trip_name, location, no_of_days, traveler, budget];
 
-    db.query(
-      insertTripQuery,
-      [user_id, trip_name, location, no_of_days, traveler, budget],
-      (err, result) => {
-        if (err) {
-          return res.status(500).json({ message: err.message });
-        }
+    db.query(insertTripQuery, values, (err, result) => {
+      if (err) {
+        return res.status(500).json({ message: err.message });
+      }
 
-        const trip_id = result.insertId;
+      const trip_id = result.insertId;
 
-        // Insert hotel options
-        if (hotels && hotels.length > 0) {
-          const hotelOptionPromises = hotels.map((option) => {
-            const insertHotelOptionQuery = `
+      // Insert hotel options
+      if (hotels && hotels.length > 0) {
+        const hotelOptionPromises = hotels.map((option) => {
+          const insertHotelOptionQuery = `
             INSERT INTO hotels (trip_id, hotel_name, hotel_address, price, hotel_image_url, geo_coordinates, rating, description) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
           `;
-            return new Promise((resolve, reject) => {
-              db.query(
-                insertHotelOptionQuery,
-                [
-                  trip_id,
-                  option.hotelName,
-                  option.hotelAddress,
-                  option.price,
-                  option.hotelImageUrl,
-                  option.geoCoordinates,
-                  option.rating,
-                  option.description,
-                ],
-                (err) => {
-                  if (err) reject(err);
-                  resolve();
-                }
-              );
-            });
+          return new Promise((resolve, reject) => {
+            db.query(
+              insertHotelOptionQuery,
+              [
+                trip_id,
+                option.hotelName,
+                option.hotelAddress,
+                option.price,
+                option.hotelImageUrl,
+                option.geoCoordinates,
+                option.rating,
+                option.description,
+              ],
+              (err) => {
+                if (err) reject(err);
+                resolve();
+              }
+            );
           });
+        });
 
-          // Execute all hotel option insertions
-          Promise.all(hotelOptionPromises)
-            .then(() => {
-              // Insert itinerary
-              if (itinerary) {
-                const itineraryPromises = [];
+        // Execute all hotel option insertions
+        Promise.all(hotelOptionPromises)
+          .then(() => {
+            // Insert itinerary
+            if (itinerary) {
+              const itineraryPromises = [];
 
-                for (let day in itinerary) {
-                  itinerary[day].forEach((item) => {
-                    const insertItineraryQuery = `
+              for (let day in itinerary) {
+                itinerary[day].forEach((item) => {
+                  const insertItineraryQuery = `
                     INSERT INTO itinerary (trip_id, day, time, place_name, place_details, place_image_url, geo_coordinates, ticket_pricing, time_to_travel)
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                   `;
-                    itineraryPromises.push(
-                      new Promise((resolve, reject) => {
-                        db.query(
-                          insertItineraryQuery,
-                          [
-                            trip_id,
-                            day,
-                            item.time,
-                            item.placeName,
-                            item.placeDetails,
-                            item.placeImageUrl,
-                            item.geoCoordinates,
-                            item.ticketPricing,
-                            item.timeToTravel,
-                          ],
-                          (err) => {
-                            if (err) reject(err);
-                            resolve();
-                          }
-                        );
-                      })
-                    );
-                  });
-                }
-
-                Promise.all(itineraryPromises)
-                  .then(() => {
-                    res.status(201).json({
-                      status: "success",
-                      message: "Trip created successfully",
-                      trip_id,
-                    });
-                  })
-                  .catch((err) => {
-                    res.status(500).json({ message: err.message });
-                  });
-              } else {
-                res.status(201).json({
-                  status: "success",
-                  message: "Trip created successfully, no itinerary provided",
-                  trip_id,
+                  itineraryPromises.push(
+                    new Promise((resolve, reject) => {
+                      db.query(
+                        insertItineraryQuery,
+                        [
+                          trip_id,
+                          day,
+                          item.time,
+                          item.placeName,
+                          item.placeDetails,
+                          item.placeImageUrl,
+                          item.geoCoordinates,
+                          item.ticketPricing,
+                          item.timeToTravel,
+                        ],
+                        (err) => {
+                          if (err) reject(err);
+                          resolve();
+                        }
+                      );
+                    })
+                  );
                 });
               }
-            })
-            .catch((err) => {
-              res.status(500).json({ message: err.message });
-            });
-        } else {
-          res.status(201).json({
-            status: "success",
-            message: "Trip created successfully, no hotel options provided",
-            trip_id,
+
+              Promise.all(itineraryPromises)
+                .then(() => {
+                  res.status(201).json({
+                    status: "success",
+                    message: "Trip created successfully",
+                    trip_id,
+                  });
+                })
+                .catch((err) => {
+                  res.status(500).json({ message: err.message });
+                });
+            } else {
+              res.status(201).json({
+                status: "success",
+                message: "Trip created successfully, no itinerary provided",
+                trip_id,
+              });
+            }
+          })
+          .catch((err) => {
+            res.status(500).json({ message: err.message });
           });
-        }
+      } else {
+        res.status(201).json({
+          status: "success",
+          message: "Trip created successfully, no hotel options provided",
+          trip_id,
+        });
       }
-    );
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
     console.error(error);
@@ -155,7 +151,7 @@ exports.getTrip = (req, res) => {
     SELECT * FROM itinerary WHERE trip_id = ?
   `;
   try {
-    // Get the trip details
+    // Get the trip details..
     db.query(tripQuery, [trip_id], (err, tripResult) => {
       if (err) {
         return res

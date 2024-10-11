@@ -4,15 +4,18 @@ import axios from "axios";
 import { toast } from "sonner";
 import TripHero from "@/components/customs/TripHero";
 import HotelList from "@/components/customs/HotelList";
+import ItineraryCard from "@/components/customs/ItineraryCard";
 
 const TripDetails = () => {
-  const { trip_id } = useParams(); // Retrieve trip_id from the URL
+  const { trip_id } = useParams(); // Retrieve trip_id from the URL..
   const [tripData, setTripData] = useState(null);
+  const [loading, setLoading] = useState(false);
   console.log("id:", trip_id);
 
   useEffect(() => {
     // Fetch trip details from the backend
     const fetchTripDetails = async () => {
+      setLoading(true);
       try {
         const response = await axios.get(
           `http://localhost:3000/api/trips/${trip_id}`
@@ -27,14 +30,14 @@ const TripDetails = () => {
         toast("An error occurred while fetching trip details.", {
           type: "error",
         });
+        setLoading(false);
       }
     };
 
     fetchTripDetails();
   }, [trip_id]);
-  console.log(tripData);
 
-  if (!tripData) {
+  if (loading) {
     return <div>Loading...</div>;
   }
 
@@ -54,20 +57,7 @@ const TripDetails = () => {
         <h3 className="text-2xl font-semibold">Itinerary</h3>
         {tripData?.trip.itinerary &&
           Object.keys(tripData?.trip.itinerary).map((day, index) => (
-            <div key={index} className="mt-5">
-              <h4 className="text-xl font-semibold">{day}</h4>
-              <ul>
-                {tripData?.trip.itinerary[day].map((item, idx) => (
-                  <li key={idx} className="mt-2">
-                    <h5 className="text-lg">{item?.place_name}</h5>
-                    <p>{item?.place_details}</p>
-                    <p>Time: {item?.time}</p>
-                    <p>Ticket Pricing: {item?.ticket_pricing}</p>
-                    <p>Time to Travel: {item?.time_to_travel}</p>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <ItineraryCard key={index} day={day} />
           ))}
       </div>
     </div>

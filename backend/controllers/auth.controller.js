@@ -57,7 +57,7 @@ exports.signin = (req, res) => {
     //check email
     const checkq = "SELECT * FROM users WHERE email = ?";
     db.query(checkq, [email], async (err, result) => {
-      //if error
+      //if error..
       if (err) {
         return res.status(500).json({ message: err.message });
       }
